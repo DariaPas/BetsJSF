@@ -3,8 +3,13 @@
 <faces-config
     xmlns="http://java.sun.com/xml/ns/javaee"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://Java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+    xsi:schemaLocation="http://Java.sun.com/xml/ns/javaee http://Java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
     version="2.0">
+	<managed-bean>
+		<managed-bean-name>question</managed-bean-name>
+		<managed-bean-class>modelo.bean.QuestionBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
 	<navigation-rule>
 		<display-name>Main.xhtml</display-name>
 		<from-view-id>/Main.xhtml</from-view-id>

@@ -9,18 +9,44 @@ xmlns:p="http://primefaces.org/ui">
 <title>Query Questions</title>
 </h:head>
 <h:body>
-<h:form>
+<h:form id="miForm">
 <table>
 <tr>
 <td>Fecha :</td>
 <td><p:calendar id="fecha" value="#{question.fecha}" navigator="false"
 mode="inline">
-<p:ajax event="dateSelect" listener="#{question.onDateSelect}" update="mensajes"></p:ajax>
+<p:ajax event="dateSelect" listener="#{question.onDateSelect}" update="mensajes :miForm:tablaPF :miForm:lista"></p:ajax>
 </p:calendar></td>
 </tr>
-<tr><td>
+<tr>
+<td><h3>Tipo de evento:</h3></td>
+						<td><h:selectOneMenu id="lista" value="#{question.e}"
+								converter="omnifaces.SelectItemsConverter">
+								<f:selectItems value="#{question.eventos}" />
+								<f:ajax event="change" listener="#{question.listener}" render="mensajes2"/>
+							</h:selectOneMenu></td></tr>
+<tr>
+<td>
 <h:messages id="mensajes" style="color:blue" /></td>			
 </tr>
+<tr>
+<td>
+<p:dataTable id="tablaPF" value="#{question.eventos}" 
+								var="item" selectionMode="single" selection="#{question.e}"
+								border="1" rowKey="#{item.eventNumber}">
+								<p:ajax event="rowSelect" listener="#{question.onEventSelect}"
+								update=":miForm:escogido :miForm:mensajes">
+								</p:ajax>
+								<f:facet name="header">Tipo de Evento:</f:facet>
+								<p:column headerText="Numero">#{item.eventNumber}</p:column>
+								<p:column headerText="Descripcion">#{item.description}</p:column>
+							</p:dataTable></td>
+								<td><h:outputText id="escogido" value="#{question.e}"
+								style="color:red" /></td>
+</tr>
+<tr>
+						<td><h:messages id="mensajes2" style="color:green" /></td>
+					</tr>
 </table>
 </h:form>
 </h:body>

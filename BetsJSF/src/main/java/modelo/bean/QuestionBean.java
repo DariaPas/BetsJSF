@@ -1,12 +1,15 @@
 package modelo.bean;
 
 import java.util.Date;
+import java.util.Vector;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 
 import org.primefaces.event.SelectEvent;
 
+import businessLogic.BLFacade;
 import domain.Question;
 import domain.Event;
 
@@ -15,7 +18,40 @@ public class QuestionBean {
 	private Date fecha; 
 	private Event e;
 	private Question q;
+	private BLFacade blfacade;
+	private Vector<Event> eventos=new Vector<Event>();
+	private Vector<Date> eventosM=new Vector<Date>();
 	
+	
+	public QuestionBean() {
+		blfacade=FacadeBean.getBusinessLogic();
+		eventos=blfacade.getEvents(fecha);	
+		//eventosM=blfacade.getEventsMonth(fecha);
+	}
+	public Event getE() {
+		return e;
+	}
+	public void setE(Event e) {
+		this.e = e;
+	}
+	public Vector<Date> getEventosM() {
+		return eventosM;
+	}
+	public void setEventosM(Vector<Date> eventosM) {
+		this.eventosM = eventosM;
+	}
+	public Question getQ() {
+		return q;
+	}
+	public void setQ(Question q) {
+		this.q = q;
+	}
+	public BLFacade getBlfacade() {
+		return blfacade;
+	}
+	public void setBlfacade(BLFacade blfacade) {
+		this.blfacade = blfacade;
+	}
 	public Event getEvent() {
 		return e;
 	}
@@ -30,9 +66,6 @@ public class QuestionBean {
 		this.q=q;
 	}
 	
-	
-	
-	
 	public Date getFecha() {
 		return fecha;
 	}
@@ -40,8 +73,29 @@ public class QuestionBean {
 		this.fecha = fecha;
 	}
 	public void onDateSelect(SelectEvent event) {
+		fecha=(Date) event.getObject();
+		eventos=blfacade.getEvents(fecha);
+		//eventosM=blfacade.getEventsMonth(fecha);
+		//preguntas=null;
 		 FacesContext.getCurrentInstance().addMessage(null,
 		 new FacesMessage("Fecha escogida: "+event.getObject()));
 		}
-	
+	public void listener(AjaxBehaviorEvent event) {
+		 FacesContext.getCurrentInstance().addMessage(null,
+		 new FacesMessage("El tipo de evento:"+e.getEventNumber()+"/"+e.getDescription())); 
+	}
+	public void onEventSelect(SelectEvent event) {
+		this.e=(Event)event.getObject();
+		//preguntas=e.getQuestions();
+		FacesContext.getCurrentInstance().addMessage("miForm:mensajes",
+		new FacesMessage("El tipo del evento(tabla):"+e.getEventNumber()+"/"+e.getDescription()));
+	}
+	public Vector<Event> getEventos() {
+		return eventos;
+	}
+	public void setEventos(Vector<Event> eventos) {
+		this.eventos = eventos;
+	}
+
+		
 }

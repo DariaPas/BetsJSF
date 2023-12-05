@@ -21,6 +21,7 @@ public class QuestionBean {
 	private BLFacade blfacade;
 	private Vector<Event> eventos=new Vector<Event>();
 	private Vector<Date> eventosM=new Vector<Date>();
+	private Vector<Question> preguntas=new Vector<Question>();
 	
 	
 	public QuestionBean() {
@@ -86,15 +87,25 @@ public class QuestionBean {
 	}
 	public void onEventSelect(SelectEvent event) {
 		this.e=(Event)event.getObject();
-		//preguntas=e.getQuestions();
+		preguntas=e.getQuestions();
 		FacesContext.getCurrentInstance().addMessage("miForm:mensajes",
-		new FacesMessage("El tipo del evento(tabla):"+e.getEventNumber()+"/"+e.getDescription()));
+		new FacesMessage("Preguntas del evento "+e.getDescription()));
+	}
+	public void onQuestionSelect(SelectEvent event){
+		FacesContext.getCurrentInstance().addMessage("miForm:mensajes",
+				new FacesMessage("Preguntas del evento "+e.getDescription()));
 	}
 	public Vector<Event> getEventos() {
 		return eventos;
 	}
 	public void setEventos(Vector<Event> eventos) {
 		this.eventos = eventos;
+	}
+	public Vector<Question> getPreguntas() {
+		return preguntas;
+	}
+	public void setPreguntas(Vector<Question> preguntas) {
+		this.preguntas = preguntas;
 	}
 
 		

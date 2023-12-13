@@ -8,6 +8,7 @@ public class FacadeBean {
 
 	private static BLFacade blf;
 	private static FacadeBean singleton= new FacadeBean();
+	//private static DataAccess a=new DataAccess();
 	
 	private FacadeBean() {
 		try {
@@ -38,5 +39,5 @@ public class FacadeBean {
 	public static BLFacade getBusinessLogic() {
 		return blf;
 	}
-
+	
 }

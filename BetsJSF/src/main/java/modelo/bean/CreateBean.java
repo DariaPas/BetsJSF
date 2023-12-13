@@ -140,4 +140,14 @@ public class CreateBean {
 		
 		blfacade.createQuestion(e, quest_text, minbet);
 	}
+	public void onQuestionSelect(SelectEvent event){
+		FacesContext.getCurrentInstance().addMessage("miForm:mensajes",
+				new FacesMessage("Preguntas del evento "+e.getDescription()));
+	}
+	public void onEventSelectQ(SelectEvent event) {
+		this.e=(Event)event.getObject();
+		preguntas=e.getQuestions();
+		FacesContext.getCurrentInstance().addMessage("miForm:mensajes",
+		new FacesMessage("Preguntas del evento "+e.getDescription()));
+	}
 }

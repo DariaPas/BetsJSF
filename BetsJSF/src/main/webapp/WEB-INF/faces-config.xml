@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <faces-config
-    xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns="http://Java.sun.com/xml/ns/javaee"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://Java.sun.com/xml/ns/javaee http://Java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd" 
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd" 
     version="2.0">
 	<managed-bean>
 		<managed-bean-name>question</managed-bean-name>
@@ -15,11 +14,29 @@
 		<managed-bean-class>modelo.bean.CreateBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>login</managed-bean-name>
+		<managed-bean-class>modelo.bean.LoginBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>register</managed-bean-name>
+		<managed-bean-class>modelo.bean.RegisterBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	<navigation-rule>
+		<display-name>Login.xhtml</display-name>
+		<from-view-id>/Login.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>login</from-outcome>
+			<to-view-id>/Main.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 	<navigation-rule>
 		<display-name>Main.xhtml</display-name>
 		<from-view-id>/Main.xhtml</from-view-id>
 		<navigation-case>
-			<from-outcome>create</from-outcome>
+			<from-outcome>createq</from-outcome>
 			<to-view-id>/CreateQuestion.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
@@ -29,6 +46,30 @@
 		<navigation-case>
 			<from-outcome>query</from-outcome>
 			<to-view-id>/QueryQuestions.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>Register.xhtml</display-name>
+		<from-view-id>/Register.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>reg</from-outcome>
+			<to-view-id>/Main.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>QueryQuestioons.xhtml</display-name>
+		<from-view-id>/QueryQuestions.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>main</from-outcome>
+			<to-view-id>/Main.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>CreateQuestion.xhtml</display-name>
+		<from-view-id>/CreateQuestion.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>main2</from-outcome>
+			<to-view-id>/Main.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 </faces-config>

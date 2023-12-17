@@ -50,13 +50,13 @@ mode="inline">
 <tr><td>
 <p:dataTable id="tablaP" value="#{question.preguntas}" 
 								var="item2" selectionMode="single" selection="#{question.q}"
-								border="1" rowKey="#{item2.questionNumber}">
+								border="1" rowKey="#{item2.id}">
 								<p:ajax event="rowSelect" listener="#{question.onQuestionSelect}"
 								update=":miForm:escogido2 :miForm:mensajes3">
 								</p:ajax>
 								<f:facet name="header">Preguntas:</f:facet>
-								<p:column headerText="Numero">#{item2.questionNumber}</p:column>
-								<p:column headerText="Pregunta">#{item2.question}</p:column>
+								<p:column headerText="Numero">#{item2.id}</p:column>
+								<p:column headerText="Pregunta">#{item2.descripcion}</p:column>
 							</p:dataTable></td>
 								<td><h:outputText id="escogido2" value="#{question.q}"
 								style="color:red" /></td>

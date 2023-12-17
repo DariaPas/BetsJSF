@@ -135,7 +135,7 @@ public String comprobar2(){
 }
 
 
-	public void doRegister() {
-		blfacade.register(nombre, password, numeroCuenta);
+	public boolean doRegister() {
+		return this.blfacade.register(nombre, password, numeroCuenta);	  
 	}
 	}

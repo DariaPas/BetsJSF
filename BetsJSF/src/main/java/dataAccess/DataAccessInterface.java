@@ -1,27 +1,17 @@
 package dataAccess;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Vector;
 
-import domain.Event;
-import domain.Question;
 import exceptions.QuestionAlreadyExist;
 import modelo.bean.RegisterBean;
+import modelo.dominio.Evento;
+import modelo.dominio.Question;
 
 public interface DataAccessInterface {
 
 		
-	/**
-	 * This method opens the database
-	 */
-	void open();
-	
-	/**
-	 * This method closes the database
-	 */
-	void close();
-
-	
 	/**
 	 * This method removes all the elements of the database
 	 */
@@ -35,23 +25,12 @@ public interface DataAccessInterface {
 	void initialize();
 
 	/**
-	 * This method creates a question for an event, with a question text and the minimum bet
-	 * 
-	 * @param event to which question is added
-	 * @param question text of the question
-	 * @param betMinimum minimum quantity of the bet
-	 * @return the created question, or null, or an exception
-	 * @throws QuestionAlreadyExist if the same question already exists for the event
-	 */
-	Question createQuestion(Event event, String question, float betMinimum) throws QuestionAlreadyExist;
-
-	/**
 	 * This method retrieves from the database the events of a given date 
 	 * 
 	 * @param date in which events are retrieved
 	 * @return collection of events
 	 */
-	Vector<Event> getEvents(Date date);
+	List<Evento> getEvents(Date date);
 
 	/**
 	 * This method retrieves from the database the dates a month for which there are events
@@ -59,7 +38,7 @@ public interface DataAccessInterface {
 	 * @param date of the month for which days with events want to be retrieved 
 	 * @return collection of dates
 	 */
-	Vector<Date> getEventsMonth(Date date);
+	List<Date> getEventsMonth(Date date);
 
 	
 	/**
@@ -69,7 +48,7 @@ public interface DataAccessInterface {
 	 * @param question the question to check  
 	 * @return true if the event contains this the questions, false in other case
 	 */
-	boolean existQuestion(Event event, String question);
+	boolean existQuestion(Evento event, String question);
 
 	/**
 	 * 
@@ -80,5 +59,7 @@ public interface DataAccessInterface {
 	 */
 	boolean storeRegister(String username, String password, Integer numCuenta);
 	
+	
+	void createAndStoreEvento(String descripcion, Date fecha);
 
 }

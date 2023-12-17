@@ -1,8 +1,11 @@
 package modelo.dominio;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -10,19 +13,57 @@ import org.hibernate.annotations.FetchMode;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 
+@SuppressWarnings("serial")
 @Entity
-public class Question {
-	 @Id
-	 private Long id;
+public class Question implements Serializable{
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	 private String descripcion;
 	 private Date fecha;
+	 private float betM;
+	 
+	 @OneToOne
+	 private Evento e;
 	 @ManyToOne(targetEntity=Usuario.class, cascade=CascadeType.PERSIST, fetch=FetchType.EAGER)
 	 @Fetch(value = FetchMode.JOIN)
 	 private Usuario usuario;
 	 public boolean isLogin() {
 		return login;
 	}
+	 
+	 @Override
+	public String toString() {
+		return  id + ", " + descripcion;
+	}
+
+	public Question() {
+		 super();
+	 }
+		
+		public Question(String question, float betMinimum, Evento event) {
+			this.descripcion=question;
+			this.betM=betMinimum;
+			this.e=event;
+		}
+
+	public float getBetM() {
+			return betM;
+		}
+
+		public void setBetM(float betM) {
+			this.betM = betM;
+		}
+
+		public Evento getE() {
+			return e;
+		}
+
+		public void setE(Evento e) {
+			this.e = e;
+		}
 
 	public void setLogin(boolean login) {
 		this.login = login;
@@ -34,8 +75,8 @@ public class Question {
 
 	private boolean login;
 	
-	 public Question() {}
-	
+	 
+
 	public Long getId() {
 		return id;
 	 }
@@ -59,10 +100,7 @@ public class Question {
 		this.usuario = usuario;
 	}
 
-	public Date getQuestion() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	
 } 

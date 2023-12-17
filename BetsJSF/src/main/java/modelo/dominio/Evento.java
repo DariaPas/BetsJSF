@@ -1,52 +1,57 @@
 package modelo.dominio;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Vector;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import domain.IntegerAdapter;
 
-
+@SuppressWarnings("serial")
 @Entity
-public class Event implements Serializable {
+public class Evento implements Serializable {
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-	@Id @GeneratedValue
+	@Id 
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer eventNumber;
 	private String description; 
 	private Date eventDate;
-	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
-	private Vector<Question> questions=new Vector<Question>();
+	@Column(length=342432)
+	@OneToMany(targetEntity=Question.class, mappedBy="e", cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	private List<Question> questions=new ArrayList<Question>();
 
-	public Vector<Question> getQuestions() {
+	public List<Question> getQuestions() {
 		return questions;
 	}
 
-	public void setQuestions(Vector<Question> questions) {
+	public void setQuestions(List<Question> questions) {
 		this.questions = questions;
 	}
 
-	public Event() {
+	public Evento() {
 		super();
 	}
 
-	public Event(Integer eventNumber, String description,Date eventDate) {
+	public Evento(Integer eventNumber, String description,Date eventDate) {
 		this.eventNumber = eventNumber;
 		this.description = description;
 		this.eventDate=eventDate;
 	}
 	
-	public Event( String description,Date eventDate) {
+	public Evento( String description,Date eventDate) {
 		this.description = description;
 		this.eventDate=eventDate;
 	}
@@ -103,7 +108,7 @@ public class Event implements Serializable {
 	public boolean DoesQuestionExists(String question)  {	
 		
 		for (Question q:this.getQuestions()){
-			if (q.getQuestion().compareTo(question)==0)
+			if (q.getDescripcion().compareTo(question)==0)
 				return true;
 		}
 		return false;
@@ -127,7 +132,7 @@ public class Event implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Event other = (Event) obj;
+		Evento other = (Evento) obj;
 		if (eventNumber != other.eventNumber)
 			return false;
 		return true;

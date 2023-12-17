@@ -1,6 +1,7 @@
 package dataAccess;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,10 +20,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Query;
 
-import configuration.ConfigXML;
 import configuration.UtilDate;
-import domain.Event;
-import domain.Question;
+import modelo.dominio.Evento;
+import modelo.dominio.Question;
 import exceptions.QuestionAlreadyExist;
 import modelo.HibernateUtil;
 import modelo.bean.RegisterBean;
@@ -50,7 +50,7 @@ public class HibernateDataAccess implements DataAccessInterface {
 	public void initialize(){
 		
 		//db.getTransaction().begin();
-		
+		System.out.println("fjisofsa");
 		//Calendar
 		try {
 
@@ -63,7 +63,6 @@ public class HibernateDataAccess implements DataAccessInterface {
 		   if (month==12) { month=0; year+=1;}  
 		   
 		   HibernateDataAccess hda= new HibernateDataAccess();
-		   hda.emptyDatabase();
 		   
 		   hda.createAndStoreEvento("AtlÃ©tico-Athletic", UtilDate.newDate(year,month,17));
 		   hda.createAndStoreEvento("Eibar-Barcelona", UtilDate.newDate(year,month,17));
@@ -73,12 +72,12 @@ public class HibernateDataAccess implements DataAccessInterface {
 	    
 		   Session s= HibernateUtil.getSessionFactory().getCurrentSession();
 		   s.beginTransaction();
-		   Query q= s.createQuery("from Event");
+		   Query q= s.createQuery("from Evento");
 		   List l= q.list();
-		   Event e1=(Event) l.get(0);
-		   Event e2=(Event) l.get(1);
-		   Event e3=(Event) l.get(2);
-		   Event e4=(Event) l.get(3);
+		   Evento e1=(Evento) l.get(0);
+		   Evento e2=(Evento) l.get(1);
+		   Evento e3=(Evento) l.get(2);
+		   Evento e4=(Evento) l.get(3);
 		   hda.createAndStoreQuestion(e1,"Quien va a ganar?", 1.0F);
 		   hda.createAndStoreQuestion(e2, "Quien meterá el primer gol?", 4.0F);
 		   hda.createAndStoreQuestion(e3, "Quien perderá?", 5.0F);
@@ -178,33 +177,7 @@ public class HibernateDataAccess implements DataAccessInterface {
 		}
 	}
 	
-	/**
-	 * This method creates a question for an event, with a question text and the minimum bet
-	 * 
-	 * @param event to which question is added
-	 * @param question text of the question
-	 * @param betMinimum minimum quantity of the bet
-	 * @return the created question, or null, or an exception
- 	 * @throws QuestionAlreadyExist if the same question already exists for the event
-	 */
-	public Question createQuestion(Event event, String question, float betMinimum) throws  QuestionAlreadyExist {
-		System.out.println(">> HibernateDataAccess: createQuestion=> event= "+event+" question= "+question+" betMinimum="+betMinimum);
-		System.out.println(db+" "+event);
-		
-		
-			Event ev = db.find(Event.class, event.getEventNumber());
-			
-			if (ev.DoesQuestionExists(question)) throw new QuestionAlreadyExist(ResourceBundle.getBundle("Etiquetas").getString("ErrorQueryAlreadyExist"));
-			
-			db.getTransaction().begin();
-			Question q = ev.addQuestion(question, betMinimum);
-			//db.persist(q);
-			db.persist(ev); // db.persist(q) not required when CascadeType.PERSIST is added in questions property of Event class
-							// @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
-			db.getTransaction().commit();
-			return q;
-		
-	}
+	
 	
 	/**
 	 * This method retrieves from the database the events of a given date 
@@ -212,17 +185,21 @@ public class HibernateDataAccess implements DataAccessInterface {
 	 * @param date in which events are retrieved
 	 * @return collection of events
 	 */
-	public Vector<Event> getEvents(Date date) {
-		System.out.println(">> DataAccess: getEvents");
-		Vector<Event> res = new Vector<Event>();	
-		TypedQuery<Event> query = db.createQuery("SELECT ev FROM Event ev WHERE ev.eventDate=?1",Event.class);   
-		query.setParameter(1, date);
-		List<Event> events = query.getResultList();
-	 	 for (Event ev:events){
-	 	   System.out.println(ev.toString());		 
-		   res.add(ev);
-		  }
-	 	return res;
+	public List<Evento> getEvents(Date date) {
+		System.out.println(">> HibernateDataAccess: getEvents");
+		List<Evento> le = new ArrayList<Evento>();	
+		Session s=HibernateUtil.getSessionFactory().getCurrentSession();
+		s.beginTransaction();
+		
+			Query q=s.createQuery("from Evento where eventDate= :fecha");
+			q.setParameter("fecha", date);
+			List<Evento> eventos=q.list();
+				for(Evento e: eventos) {
+					System.out.println(e.toString());
+					le.add(e);
+				}
+				s.getTransaction().commit();
+			return le;
 	}
 	
 	/**
@@ -231,40 +208,53 @@ public class HibernateDataAccess implements DataAccessInterface {
 	 * @param date of the month for which days with events want to be retrieved 
 	 * @return collection of dates
 	 */
-	public Vector<Date> getEventsMonth(Date date) {
-		System.out.println(">> DataAccess: getEventsMonth");
-		Vector<Date> res = new Vector<Date>();	
+	public List<Date> getEventsMonth(Date date){
+		List<Date> ld=new ArrayList<Date>();
+		Session s=HibernateUtil.getSessionFactory().getCurrentSession();
+		s.beginTransaction();
 		
 		Date firstDayMonthDate= UtilDate.firstDayMonth(date);
 		Date lastDayMonthDate= UtilDate.lastDayMonth(date);
-				
 		
-		TypedQuery<Date> query = db.createQuery("SELECT DISTINCT ev.eventDate FROM Event ev WHERE ev.eventDate BETWEEN ?1 and ?2",Date.class);   
-		query.setParameter(1, firstDayMonthDate);
-		query.setParameter(2, lastDayMonthDate);
-		List<Date> dates = query.getResultList();
-	 	 for (Date d:dates){
-	 	   System.out.println(d.toString());		 
-		   res.add(d);
-		  }
-	 	return res;
+		Query q= s.createQuery("SELECT DISTINCT ev.eventDate FROM Evento ev WHERE ev.eventDate BETWEEN :1 and :2");
+		q.setParameter("1", firstDayMonthDate);
+		q.setParameter("2", lastDayMonthDate);
+		
+		List<Date> dates=q.list();
+		for (Date d:dates) {
+			System.out.println(d.toString());
+			ld.add(d);
+		}
+		return ld;
 	}
 	
-	@Override
-	public void open(){
-		s.openSession();
+	public List<Question> getQuestions(Evento event){
+		List<Question> lq = new ArrayList<Question>();
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		Query q=session.createQuery("select ques from Question ques where ques.e=?1");
+		q.setParameter("1", event);
+		List<Question> eventList= q.list();
+		for(Question ques: eventList) {
+			System.out.println(ques.toString());
+			lq.add(ques);
+		}
+		return lq;
 	}
-
-public boolean existQuestion(Event event, String question) {
-	System.out.println(">> DataAccess: existQuestion=> event= "+event+" question= "+question);
-	Event ev = db.find(Event.class, event.getEventNumber());
-	return ev.DoesQuestionExists(question);
 	
-}
-	public void close(){
-		s.close();
-	}
 
+	public boolean existQuestion(Evento event, String question) {
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		s.beginTransaction();
+		Query q=s.createQuery("FROM Question WHERE event_eventN = :eventN AND question = :question");
+		q.setParameter("eventN", event.getEventNumber());
+		q.setParameter("question", question);
+		if(q.list().size()!=0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 	
 
 	@Override
@@ -272,7 +262,7 @@ public boolean existQuestion(Event event, String question) {
 		Session s=HibernateUtil.getSessionFactory().getCurrentSession();
 		s.beginTransaction();
 		Query q=s.createQuery("delete from Question");
-		Query q2= s.createQuery("delete from Event");
+		Query q2= s.createQuery("delete from Evento");
 		q.executeUpdate();
 		q2.executeUpdate();
 		s.getTransaction().commit();
@@ -293,22 +283,22 @@ public boolean existQuestion(Event event, String question) {
 	}
 	
 	
-	private void createAndStoreEvento(String descripcion, Date fecha) {
+	public void createAndStoreEvento(String descripcion, Date fecha) {
 		 Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		 session.beginTransaction();
-		Event e = new Event();
+		 Evento e = new Evento();
 		 e.setDescription(descripcion);
 		 e.setEventDate(fecha);
-		 session.save(e);
+		 session.persist(e);
 		 session.getTransaction().commit();
 	} 
 	
-	private Question createAndStoreQuestion(Event event, String question, float bet) {
+public Question createAndStoreQuestion(Evento event, String question, float bet) {
 		 Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		 s.beginTransaction();
-		 Query q=s.createQuery("from Event where eventNumber= :eventN");
-		 q.setParameter("eventN", event.getEventNumber());
-		 Event e= (Event) q.list().get(0);
+		 Query q=s.createQuery("from Evento where eventNumber= :eventoN");
+		 q.setParameter("eventoN", event.getEventNumber());
+		 Evento e= (Evento) q.list().get(0);
 		 s.getTransaction().begin();
 		 Question que= e.addQuestion(question, bet);
 		 s.persist(e);
@@ -320,7 +310,7 @@ public boolean existQuestion(Event event, String question) {
 		Session s= HibernateUtil.getSessionFactory().getCurrentSession();
 		s.beginTransaction();
 		
-		Query q=(Query) s.createQuery("from User where username= :user");
+		Query q=s.createQuery("from Usuario where nombre= :user");
 		q.setParameter("user", username);
 		
 		if(q.list().size()==0) {
@@ -334,4 +324,12 @@ public boolean existQuestion(Event event, String question) {
 		s.beginTransaction().commit();
 		return res;
 	}
+
+
+
+
+
+
+
+	
 }

@@ -1,20 +1,20 @@
 package businessLogic;
 //hola
 import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
-import configuration.ConfigXML;
-import dataAccess.DataAccessInterface;
+
 import dataAccess.HibernateDataAccess;
-import domain.Question;
-import domain.Event;
 import exceptions.EventFinished;
 import exceptions.QuestionAlreadyExist;
 import modelo.bean.RegisterBean;
+import modelo.dominio.Evento;
+import modelo.dominio.Question;
 import modelo.dominio.Usuario;
 
 /**
@@ -22,41 +22,22 @@ import modelo.dominio.Usuario;
  */
 @WebService(endpointInterface = "businessLogic.BLFacade")
 public class BLFacadeImplementation  implements BLFacade {
-	DataAccessInterface dbManager;
 	HibernateDataAccess hda;
 
 	public BLFacadeImplementation()  {		
 		System.out.println("Creating HibernateDataAccess instance");
 		hda=new HibernateDataAccess();
-		
-		/*if (c.getDataBaseOpenMode().equals("initialize")) {
-			
-		    dbManager=new DataAccessInterface(new ObjectDbDAOManager());
-			dbManager.initializeDB();
-			dbManager.close();
-			}
-		*/
 	}
 	
-    public BLFacadeImplementation(DataAccessInterface da)  {
+    public BLFacadeImplementation(HibernateDataAccess da)  {
 		
 		System.out.println("Creating BLFacadeImplementation instance with HibernateDataAccess parameter");
-		hda=new HibernateDataAccess();
-		//ConfigXML c=ConfigXML.getInstance();
+		da=new HibernateDataAccess();
 		
-		hda.emptyDatabase();
-		hda.open();
-		hda.initialize();
-		hda.close();
-		/*if (c.getDataBaseOpenMode().equals("initialize")) {
-			da.emptyDatabase();
-			da.open();
-			da.initializeDB();
-			da.close();
+		da.emptyDatabase();
 
-		}
-		dbManager=da;		*/
-		
+		da.initialize();
+		hda = da;
 	}
 	
 
@@ -71,21 +52,13 @@ public class BLFacadeImplementation  implements BLFacade {
  	 * @throws QuestionAlreadyExist if the same question already exists for the event
 	 */
    @WebMethod
-   public Question createQuestion(Event event, String question, float betMinimum) throws EventFinished, QuestionAlreadyExist{
+   public Question createQuestion(Evento event, String question, float betMinimum) throws EventFinished, QuestionAlreadyExist{
 	   
 	    //The minimum bed must be greater than 0
-		dbManager.open();
 		Question qry=null;
-		
-	    
 		if(new Date().compareTo(event.getEventDate())>0)
 			throw new EventFinished(ResourceBundle.getBundle("Etiquetas").getString("ErrorEventHasFinished"));
-				
-		
-		 qry=dbManager.createQuestion(event,question,betMinimum);		
-
-		dbManager.close();
-		
+		 qry=hda.createAndStoreQuestion(event,question,betMinimum);		
 		return qry;
    };
 	
@@ -96,10 +69,8 @@ public class BLFacadeImplementation  implements BLFacade {
 	 * @return collection of events
 	 */
     @WebMethod	
-	public Vector<Event> getEvents(Date date)  {
-		dbManager.open();
-		Vector<Event>  events=dbManager.getEvents(date);
-		dbManager.close();
+	public List<Evento> getEvents(Date date)  {
+		List<Evento> events=hda.getEvents(date);
 		return events;
 	}
 
@@ -110,19 +81,11 @@ public class BLFacadeImplementation  implements BLFacade {
 	 * @param date of the month for which days with events want to be retrieved 
 	 * @return collection of dates
 	 */
-	@WebMethod public Vector<Date> getEventsMonth(Date date) {
-		dbManager.open();
-		Vector<Date>  dates=dbManager.getEventsMonth(date);
-		dbManager.close();
+	@WebMethod public List<Date> getEventsMonth(Date date) {
+		List<Date>  dates=hda.getEventsMonth(date);
 		return dates;
 	}
 	
-	
-	public void close() {
-		dbManager.close();
-
-
-	}
 
 	/**
 	 * This method invokes the data access to initialize the database with some events and questions.
@@ -136,16 +99,20 @@ public class BLFacadeImplementation  implements BLFacade {
 	} */
     
 	@Override
-    public void register(String username, String password, int numCuenta) {
-    	hda.storeRegister(username, password, numCuenta);
+    public boolean register(String username, String password, int numCuenta) {
+    	return hda.storeRegister(username, password, numCuenta);
 	}
 
 	@Override
 	public void initializeBD() {
-		hda.open();
 		hda.initialize();
-		hda.close();
 		
+	}
+
+	@Override
+	public List<Question> getQuestions(Evento e) {
+		List<Question> ld= hda.getQuestions(e);
+		return ld;
 	}
 
 

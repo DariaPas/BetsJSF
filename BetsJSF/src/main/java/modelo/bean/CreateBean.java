@@ -1,6 +1,8 @@
 package modelo.bean;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Vector;
 
 import javax.faces.application.FacesMessage;
@@ -10,19 +12,19 @@ import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.event.SelectEvent;
 
 import businessLogic.BLFacade;
-import domain.Question;
 import exceptions.EventFinished;
 import exceptions.QuestionAlreadyExist;
-import domain.Event;
+import modelo.dominio.Evento;
+import modelo.dominio.Question;
 
 public class CreateBean {
 	private Date fecha; 
-	private Event e;
+	private Evento e;
 	private Question q;
 	private BLFacade blfacade;
-	private Vector<Event> eventos=new Vector<Event>();
-	private Vector<Date> eventosM=new Vector<Date>();
-	private Vector<Question> preguntas=new Vector<Question>();
+	private List<Evento> eventos=new ArrayList<Evento>();
+	private List<Date> eventosM=new ArrayList<Date>();
+	private List<Question> preguntas=new ArrayList<Question>();
 	
 	private float minbet;
 	private String quest_text;
@@ -33,16 +35,16 @@ public class CreateBean {
 		eventos=blfacade.getEvents(fecha);	
 		//eventosM=blfacade.getEventsMonth(fecha);
 	}
-	public Event getE() {
+	public Evento getE() {
 		return e;
 	}
-	public void setE(Event e) {
+	public void setE(Evento e) {
 		this.e = e;
 	}
-	public Vector<Date> getEventosM() {
+	public List<Date> getEventosM() {
 		return eventosM;
 	}
-	public void setEventosM(Vector<Date> eventosM) {
+	public void setEventosM(List<Date> eventosM) {
 		this.eventosM = eventosM;
 	}
 	public Question getQ() {
@@ -57,10 +59,10 @@ public class CreateBean {
 	public void setBlfacade(BLFacade blfacade) {
 		this.blfacade = blfacade;
 	}
-	public Event getEvent() {
+	public Evento getEvent() {
 		return e;
 	}
-	public void setEvent(Event e) {
+	public void setEvent(Evento e) {
 		this.e=e;
 	}
 	
@@ -91,13 +93,13 @@ public class CreateBean {
 	public void setMinbet(float minbet) {
 		this.minbet = minbet;
 	}
-	public Vector<Event> getEventos() {
+	public List<Evento> getEventos() {
 		return eventos;
 	}
-	public void setEventos(Vector<Event> eventos) {
+	public void setEventos(Vector<Evento> eventos) {
 		this.eventos = eventos;
 	}
-	public Vector<Question> getPreguntas() {
+	public List<Question> getPreguntas() {
 		return preguntas;
 	}
 	public void setPreguntas(Vector<Question> preguntas) {
@@ -116,7 +118,7 @@ public class CreateBean {
 		 new FacesMessage("El tipo de evento:"+e.getEventNumber()+"/"+e.getDescription())); 
 	}
 	public void onEventSelect(SelectEvent event) {
-		this.e=(Event)event.getObject();
+		this.e=(Evento)event.getObject();
 		preguntas=e.getQuestions();
 		FacesContext.getCurrentInstance().addMessage("miForm:mensajes",
 		new FacesMessage("Preguntas del evento "+e.getDescription()));
@@ -145,7 +147,7 @@ public class CreateBean {
 				new FacesMessage("Preguntas del evento "+e.getDescription()));
 	}
 	public void onEventSelectQ(SelectEvent event) {
-		this.e=(Event)event.getObject();
+		this.e=(Evento)event.getObject();
 		preguntas=e.getQuestions();
 		FacesContext.getCurrentInstance().addMessage("miForm:mensajes",
 		new FacesMessage("Preguntas del evento "+e.getDescription()));

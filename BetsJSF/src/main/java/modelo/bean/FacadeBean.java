@@ -3,6 +3,7 @@ package modelo.bean;
 import businessLogic.BLFacade;
 import businessLogic.BLFacadeImplementation;
 import dataAccess.DataAccess;
+import dataAccess.HibernateDataAccess;
 
 public class FacadeBean {
 
@@ -12,7 +13,7 @@ public class FacadeBean {
 	
 	private FacadeBean() {
 		try {
-			DataAccess a=new DataAccess();
+			HibernateDataAccess a=new HibernateDataAccess();
 			blf= new BLFacadeImplementation(a);
 		}catch(Exception e){
 			System.out.println("Está dando error: "+e.getMessage());

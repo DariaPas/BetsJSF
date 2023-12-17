@@ -7,10 +7,13 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.ActionEvent; 
 
 import org.primefaces.event.SelectEvent;
 
 import businessLogic.BLFacade;
+import businessLogic.BLFacadeImplementation;
+import dataAccess.HibernateDataAccess;
 import exceptions.EventFinished;
 import exceptions.QuestionAlreadyExist;
 import modelo.dominio.Usuario;
@@ -27,10 +30,17 @@ public class RegisterBean {
 	private String password;
 
 	public RegisterBean() {
-		blfacade=FacadeBean.getBusinessLogic();
-		tipos.add(new Usuario("estudiante"));
+		this.blfacade=FacadeBean.getBusinessLogic();
+		//blfacade=new BLFacadeImplementation();
+		//tipos.add(new Usuario("estudiante"));
 		//tipos.add(new TipoUsuario(2,"profesor"));
 	 }
+
+	public RegisterBean(String n, String p, Integer numC) {
+		this.nombre=n;
+		this.password=p;
+		this.numeroCuenta=numC;
+	}
 
 	public int getNumeroCuenta() {
 		return numeroCuenta;
@@ -38,13 +48,13 @@ public class RegisterBean {
 	public void setNumeroCuenta(int numeroCuenta) {
 		this.numeroCuenta = numeroCuenta;
 	}
-	public Usuario getTipo() {
+	/*public Usuario getTipo() {
 		return tipo;
 	 }
 	public void setTipo(Usuario tipo) {
 		this.tipo = tipo;
 		System.out.println("El tipo del usuario:"+tipo.getTipo());
-	 }
+	 }*/
 	public List<Usuario> getTipos() {
 		return tipos;
 	 }
@@ -89,20 +99,20 @@ public void onDateSelect(SelectEvent event) {
 	 FacesContext.getCurrentInstance().addMessage(null,
 	 new FacesMessage("Fecha escogida: "+event.getObject()));
 	}
-public static Usuario getObject(String tipo) {
+/*public static Usuario getObject(String tipo) {
 	 for (Usuario t: tipos){
 	 if (tipo.equals(t.getTipo()))
 	 return t;}
 	 return null;
-	}
-public void listener(AjaxBehaviorEvent event) {
+	}*/
+/*public void listener(AjaxBehaviorEvent event) {
 	 FacesContext.getCurrentInstance().addMessage(null,
 	 new FacesMessage("El tipo del usuario:"+tipo.getTipo())); 
-}
-public void onEventSelect(SelectEvent event) {
+}*/
+/*public void onEventSelect(SelectEvent event) {
 this.tipo=(Usuario)event.getObject();
 FacesContext.getCurrentInstance().addMessage("miForm:mensajes",
- new FacesMessage("El tipo del usuario (tabla):"+tipo.getTipo()));}
+ new FacesMessage("El tipo del usuario (tabla):"+tipo.getTipo()));}*/
 
 public String comprobar2(){
 	
@@ -123,4 +133,9 @@ public String comprobar2(){
 	
 	return "reg";
 }
-}
+
+
+	public void doRegister() {
+		blfacade.register(nombre, password, numeroCuenta);
+	}
+	}

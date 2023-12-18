@@ -135,7 +135,29 @@ public String comprobar2(){
 }
 
 
-	public boolean doRegister() {
-		return this.blfacade.register(nombre, password, numeroCuenta);	  
+	public String doRegister() {
+		if(nombre.length()>10) {
+			 FacesContext.getCurrentInstance().addMessage(null,
+			new FacesMessage("Error: La longitud del nombre no puede ser nayor de 10."));
+			 return null;
+		}
+		if(password.length()>10) {
+			 FacesContext.getCurrentInstance().addMessage(null,
+			new FacesMessage("Error: La longitud de la contraseña no puede ser nayor de 10."));
+			 return null;
+		}
+		int cont=0;
+		int aux=numeroCuenta;
+		while(aux>0) {
+		aux=aux/10;
+		cont++;}
+		if(cont!=4) {
+			 FacesContext.getCurrentInstance().addMessage(null,
+			new FacesMessage("Error: La longitud de el numero de cuenta tiene que ser 4."));
+			 return null;
+		}else {this.blfacade.register(nombre, password, numeroCuenta);	  
+		return "login2";
+		}
+		
 	}
 	}

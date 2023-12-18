@@ -2,7 +2,6 @@ package modelo.bean;
 
 import businessLogic.BLFacade;
 import businessLogic.BLFacadeImplementation;
-import dataAccess.DataAccess;
 import dataAccess.HibernateDataAccess;
 
 public class FacadeBean {

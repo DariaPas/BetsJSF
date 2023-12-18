@@ -61,8 +61,20 @@ public void setPassword(String password) {
  this.password = password;
  }
 
-public void login() {
-		blfacade.login(nombre, password);
+public String login() {
+	boolean esta=blfacade.login(nombre, password);
+	if(esta) {
+		nombre=null;
+		password=null;
+		return "login";
+	}
+	else {
+		FacesContext.getCurrentInstance().addMessage(null,
+				new FacesMessage("El usuario o la contraseña son incorrectos"));
+	}
+	nombre=null;
+	password=null;
+		return null;
  }
 public void onDateSelect(SelectEvent event) {
 	 FacesContext.getCurrentInstance().addMessage(null,

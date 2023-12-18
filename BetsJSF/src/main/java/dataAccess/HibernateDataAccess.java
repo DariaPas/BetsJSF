@@ -321,7 +321,9 @@ public Question createAndStoreQuestion(Evento event, String question, float bet)
 		q.setParameter("user", usern);
 		q.setParameter("p", pass);
 		
-		if(q.list().size()!=0) ya=true;
+		if(q.list().size()>0) ya=true;
+		
+		s.getTransaction().commit();
 		
 		return ya;
 	}

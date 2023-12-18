@@ -25,8 +25,7 @@ public class LoginBean {
 	private BLFacade blfacade;
 
 	public LoginBean() {
-		//tipos.add(new Usuario("estudiante"));
-		//tipos.add(new TipoUsuario(2,"profesor"));
+		this.blfacade= FacadeBean.getBusinessLogic();
 	 }
 	/*public Usuario getTipo() {
 		return tipo;
@@ -62,37 +61,12 @@ public void setPassword(String password) {
  this.password = password;
  }
 
-public String comprobar() {
-			if (nombre.length()!=password.length()){
-		 FacesContext.getCurrentInstance().addMessage(null,
-		 new FacesMessage("Error: La longitud del nombre y de la contraseña son diferentes."));
-		 return null;
-		 }
-			if(nombre.equals("pirata")){
-		 return "login";
-		 }
-			else {
-		 return "login";
-		 }
+public void login() {
+		blfacade.login(nombre, password);
  }
 public void onDateSelect(SelectEvent event) {
 	 FacesContext.getCurrentInstance().addMessage(null,
 	 new FacesMessage("Fecha escogida: "+event.getObject()));
 }
 
-
-/*public static Usuario getObject(String tipo) {
-	 for (Usuario t: tipos){
-	 if (tipo.equals(t.getTipo()))
-	 return t;}
-	 return null;
-	}
-public void listener(AjaxBehaviorEvent event) {
-	 FacesContext.getCurrentInstance().addMessage(null,
-	 new FacesMessage("El tipo del usuario:"+tipo.getTipo())); 
-}
-public void onEventSelect(SelectEvent event) {
-this.tipo=(Usuario)event.getObject();
-FacesContext.getCurrentInstance().addMessage("miForm:mensajes",
- new FacesMessage("El tipo del usuario (tabla):"+tipo.getTipo()));}*/
 }

@@ -115,6 +115,11 @@ public class BLFacadeImplementation  implements BLFacade {
 		return ld;
 	}
 
+	@Override
+	public boolean login(String u, String p) {
+		return hda.login(u, p);
+	}
+
 
 
 }

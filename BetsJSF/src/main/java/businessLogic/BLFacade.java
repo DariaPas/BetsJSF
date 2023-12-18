@@ -59,6 +59,8 @@ public interface BLFacade  {
 
 
 	@WebMethod List<Question> getQuestions(Evento e);
+	
+	@WebMethod boolean login(String u, String p);
 
 
 

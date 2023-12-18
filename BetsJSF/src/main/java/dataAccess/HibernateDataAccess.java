@@ -268,19 +268,6 @@ public class HibernateDataAccess implements DataAccessInterface {
 		s.getTransaction().commit();
 		
 	}
-
-	public RegisterBean isLogin(String u, String pass) {
-		RegisterBean r=(RegisterBean) s.getCurrentSession().get(RegisterBean.class, u);
-		if(r!=null) {
-			if(r.getPassword().equals(pass)) return r;
-		}
-		return null;
-	}
-	
-	public boolean isRegister(String username) {
-		RegisterBean r =(RegisterBean) s.getCurrentSession().get(RegisterBean.class, username); 
-		return (r!=null);
-	}
 	
 	
 	public void createAndStoreEvento(String descripcion, Date fecha) {
@@ -323,6 +310,20 @@ public Question createAndStoreQuestion(Evento event, String question, float bet)
 		}
 		s.beginTransaction().commit();
 		return res;
+	}
+	
+	public boolean login(String usern, String pass) {
+		boolean ya=false;
+		Session s=HibernateUtil.getSessionFactory().getCurrentSession();
+		s.beginTransaction();
+		
+		Query q=s.createQuery("from Usuario where nombre= :user and password= :p");
+		q.setParameter("user", usern);
+		q.setParameter("p", pass);
+		
+		if(q.list().size()!=0) ya=true;
+		
+		return ya;
 	}
 
 

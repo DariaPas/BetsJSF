@@ -34,16 +34,15 @@ public class Question implements Serializable{
 		return login;
 	}
 	 
+	 public Question() {
+		 super();
+	 }
 	 @Override
 	public String toString() {
 		return  id + ", " + descripcion;
 	}
-
-	public Question() {
-		 super();
-	 }
-		
-		public Question(String question, float betMinimum, Evento event) {
+	 
+	 public Question(String question, float betMinimum, Evento event) {
 			this.descripcion=question;
 			this.betM=betMinimum;
 			this.e=event;

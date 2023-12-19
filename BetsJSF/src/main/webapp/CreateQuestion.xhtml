@@ -23,8 +23,7 @@ xmlns:p="http://primefaces.org/ui">
 
 <tr>
 <td><h3>Tipo de evento:</h3></td>
-						<td><h:selectOneMenu id="lista" value="#{create.e}"
-								converter="omnifaces.SelectItemsConverter">
+						<td><h:selectOneMenu id="lista" value="#{create.e}">
 								<f:selectItems value="#{create.eventos}" />
 								<f:ajax event="change" listener="#{create.listener}" render="mensajes2"/>
 							</h:selectOneMenu></td></tr>

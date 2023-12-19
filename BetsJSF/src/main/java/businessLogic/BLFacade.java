@@ -1,6 +1,6 @@
 package businessLogic;
 
-import java.util.Vector;
+
 import java.util.Date;
 import java.util.List;
 
@@ -54,12 +54,28 @@ public interface BLFacade  {
 	 */	
 	@WebMethod public void initializeBD();
 
-
+	/**
+	 * This method creates a user  with a username, password and accountNumber
+	 * @param username
+	 * @param password
+	 * @param acountNumber
+	 * @return true if it has been created correctly, else false
+	 */
 	@WebMethod boolean register(String u, String p, int numC);
 
-
+	/**
+	 * This method retrieves the questions of a given event 
+	 * @param event in which the questions are retrieved
+	 * @return the list of questions of that event
+	 */
 	@WebMethod List<Question> getQuestions(Evento e);
 	
+	/**
+	 * This method retrieves the user from the registered users wit the username and the password
+	 * @param username
+	 * @param password
+	 * @return true if the user exists, else false
+	 */
 	@WebMethod boolean login(String u, String p);
 
 

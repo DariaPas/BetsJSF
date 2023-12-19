@@ -1,9 +1,8 @@
 package businessLogic;
-//hola
+
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Vector;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -12,10 +11,8 @@ import javax.jws.WebService;
 import dataAccess.HibernateDataAccess;
 import exceptions.EventFinished;
 import exceptions.QuestionAlreadyExist;
-import modelo.bean.RegisterBean;
 import modelo.dominio.Evento;
 import modelo.dominio.Question;
-import modelo.dominio.Usuario;
 
 /**
  * It implements the business logic as a web service.
@@ -24,18 +21,22 @@ import modelo.dominio.Usuario;
 public class BLFacadeImplementation  implements BLFacade {
 	HibernateDataAccess hda;
 
+	/**
+	 * Constructor withut a parameter
+	 */
 	public BLFacadeImplementation()  {		
 		System.out.println("Creating HibernateDataAccess instance");
 		hda=new HibernateDataAccess();
 	}
 	
+	/**
+	 * Constructor with an HibernateDataAccess parameter
+	 * @param da
+	 */
     public BLFacadeImplementation(HibernateDataAccess da)  {
-		
 		System.out.println("Creating BLFacadeImplementation instance with HibernateDataAccess parameter");
 		da=new HibernateDataAccess();
-		
 		da.emptyDatabase();
-
 		da.initialize();
 		hda = da;
 	}
@@ -86,36 +87,46 @@ public class BLFacadeImplementation  implements BLFacade {
 		return dates;
 	}
 	
-
 	/**
-	 * This method invokes the data access to initialize the database with some events and questions.
-	 * It is invoked only when the option "initialize" is declared in the tag dataBaseOpenMode of resources/config.xml file
-		
-    @WebMethod	
-	 public void initializeBD(){
-    	dbManager.open();
-		dbManager.initializeDB();
-		dbManager.close();
-	} */
-    
-	@Override
+	 * This method creates a user  with a username, password and accountNumber
+	 * @param username
+	 * @param password
+	 * @param acountNumber
+	 * @return true if it has been created correctly, else false
+	 */
+	@WebMethod
     public boolean register(String username, String password, int numCuenta) {
     	return hda.storeRegister(username, password, numCuenta);
 	}
-
-	@Override
+	
+	/**
+	 * This method invokes the data access to initialize the database with some events and questions.
+	 * It is invoked only when the option "initialize" is declared in the tag dataBaseOpenMode of resources/config.xml file
+	 */
+	@WebMethod
 	public void initializeBD() {
 		hda.initialize();
 		
 	}
 
-	@Override
+	/**
+	 * This method retrieves the questions of a given event 
+	 * @param event in which the questions are retrieved
+	 * @return the list of questions of that event
+	 */
+	@WebMethod
 	public List<Question> getQuestions(Evento e) {
 		List<Question> ld= hda.getQuestions(e);
 		return ld;
 	}
 
-	@Override
+	/**
+	 * This method retrieves the user from the registered users wit the username and the password
+	 * @param username
+	 * @param password
+	 * @return true if the user exists, else false
+	 */
+	@WebMethod
 	public boolean login(String u, String p) {
 		return hda.login(u, p);
 	}

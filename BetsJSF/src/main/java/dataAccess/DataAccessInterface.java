@@ -42,24 +42,19 @@ public interface DataAccessInterface {
 
 	
 	/**
-	 * This method checks if the question has been previously added to the event 
-	 * 
-	 * @param event the event
-	 * @param question the question to check  
-	 * @return true if the event contains this the questions, false in other case
-	 */
-	boolean existQuestion(Evento event, String question);
-
-	/**
-	 * 
+	 * This method creates a user  with a username, password and accountNumber
 	 * @param username
 	 * @param password
-	 * @param numCuenta
-	 * @return
+	 * @param acountNumber
+	 * @return true if it has been created correctly, else false
 	 */
 	boolean storeRegister(String username, String password, Integer numCuenta);
 	
-	
+	/**
+	 * This method creates and stores an event on the database with the description and the date
+	 * @param description of the new event
+	 * @param date of the new event
+	 */
 	void createAndStoreEvento(String descripcion, Date fecha);
 
 }

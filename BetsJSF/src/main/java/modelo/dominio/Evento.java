@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Vector;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,11 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
-import domain.IntegerAdapter;
 
 @SuppressWarnings("serial")
 @Entity
@@ -98,7 +93,6 @@ public class Evento implements Serializable {
         return q;
 	}
 
-	
 	/**
 	 * This method checks if the question already exists for that event
 	 * 
@@ -115,7 +109,6 @@ public class Evento implements Serializable {
 	}
 		
 
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

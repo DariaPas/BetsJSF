@@ -20,8 +20,7 @@ mode="inline">
 </tr>
 <tr>
 <td><h3>Tipo de evento:</h3></td>
-						<td><h:selectOneMenu id="lista" value="#{question.e}"
-								converter="omnifaces.SelectItemsConverter">
+						<td><h:selectOneMenu id="lista" value="#{question.e}">
 								<f:selectItems value="#{question.eventos}" />
 								<f:ajax event="change" listener="#{question.listener}" render="mensajes2"/>
 							</h:selectOneMenu></td></tr>

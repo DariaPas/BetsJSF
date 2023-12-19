@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.Fetch;
@@ -30,76 +29,67 @@ public class Question implements Serializable{
 	 @ManyToOne(targetEntity=Usuario.class, cascade=CascadeType.PERSIST, fetch=FetchType.EAGER)
 	 @Fetch(value = FetchMode.JOIN)
 	 private Usuario usuario;
-	 public boolean isLogin() {
-		return login;
-	}
 	 
 	 public Question() {
-		 super();
-	 }
-	 @Override
-	public String toString() {
-		return  id + ", " + descripcion;
-	}
+		super();
+	 } 
 	 
-	 public Question(String question, float betMinimum, Evento event) {
-			this.descripcion=question;
-			this.betM=betMinimum;
-			this.e=event;
-		}
+	public Question(String question, float betMinimum, Evento event) {
+		this.descripcion=question;
+		this.betM=betMinimum;
+		this.e=event;
+	}
 
 	public float getBetM() {
-			return betM;
-		}
+		return betM;
+	}
 
-		public void setBetM(float betM) {
-			this.betM = betM;
-		}
+	public void setBetM(float betM) {
+		this.betM = betM;
+	}
 
-		public Evento getE() {
-			return e;
-		}
+	public Evento getE() {
+		return e;
+	}
 
-		public void setE(Evento e) {
-			this.e = e;
-		}
-
-	public void setLogin(boolean login) {
-		this.login = login;
+	public void setE(Evento e) {
+		this.e = e;
 	}
 
 	public Usuario getUsuario() {
 		return usuario;
-	}
-
-	private boolean login;
-	
-	 
+	}	 
 
 	public Long getId() {
 		return id;
-	 }
+	}
 	public void setId(Long id) {
 		this.id = id;
-	 }
+	}
+
 	public String getDescripcion() {
 		return descripcion;
-	 }
+	}
+	
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
-	 }
+	}
+	
 	public Date getFecha() {
 		return fecha;
-	 }
+	}
+	
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
-	 }
+	}
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-
 	
-
+	@Override
+	public String toString() {
+		return  id + ", " + descripcion;
+	}
 	
 } 

@@ -124,6 +124,7 @@ public class CreateBean {
 	public void onDateSelect(SelectEvent event) {
 		fecha=(Date) event.getObject();
 		eventos=blfacade.getEvents(fecha);
+		System.out.println(eventos.toString());
 		FacesContext.getCurrentInstance().addMessage(null,
 		new FacesMessage("Fecha escogida: "+event.getObject()));
 	}

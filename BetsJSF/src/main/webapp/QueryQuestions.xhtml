@@ -15,12 +15,13 @@ xmlns:p="http://primefaces.org/ui">
 <td>Fecha :</td>
 <td><p:calendar id="fecha" value="#{question.fecha}" navigator="false"
 mode="inline">
-<p:ajax event="dateSelect" listener="#{question.onDateSelect}" update="mensajes :miForm:tablaPF :miForm:lista"></p:ajax>
+<p:ajax event="dateSelect" listener="#{question.onDateSelect}" update="miForm:mensajes :miForm:tablaPF :miForm:tablaP :miForm:lista"></p:ajax>
 </p:calendar></td>
 </tr>
 <tr>
 <td><h3>Tipo de evento:</h3></td>
-						<td><h:selectOneMenu id="lista" value="#{question.e}">
+						<td><h:selectOneMenu id="lista" value="#{question.e}"
+						converter="omnifaces.SelectItemsConverter">
 								<f:selectItems value="#{question.eventos}" />
 								<f:ajax event="change" listener="#{question.listener}" render="mensajes2"/>
 							</h:selectOneMenu></td></tr>
@@ -34,7 +35,7 @@ mode="inline">
 								var="item" selectionMode="single" selection="#{question.e}"
 								border="1" rowKey="#{item.eventNumber}">
 								<p:ajax event="rowSelect" listener="#{question.onEventSelect}"
-								update=":miForm:escogido :miForm:mensajes :miForm:tablaP">
+								update=":miForm:tablaP">
 								</p:ajax>
 								<f:facet name="header">Tipo de Evento:</f:facet>
 								<p:column headerText="Numero">#{item.eventNumber}</p:column>
@@ -51,7 +52,7 @@ mode="inline">
 								var="item2" selectionMode="single" selection="#{question.q}"
 								border="1" rowKey="#{item2.id}">
 								<p:ajax event="rowSelect" listener="#{question.onQuestionSelect}"
-								update=":miForm:escogido2 :miForm:mensajes3">
+								update=":miForm:tablaPF">
 								</p:ajax>
 								<f:facet name="header">Preguntas:</f:facet>
 								<p:column headerText="Numero">#{item2.id}</p:column>

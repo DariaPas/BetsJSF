@@ -56,10 +56,13 @@ public class BLFacadeImplementation  implements BLFacade {
    public Question createQuestion(Evento event, String question, float betMinimum) throws EventFinished, QuestionAlreadyExist{
 	   
 	    //The minimum bed must be greater than 0
-		Question qry=null;
+	   Question qry=null;
+	   if(event!=null) {
+		
 		if(new Date().compareTo(event.getEventDate())>0)
 			throw new EventFinished(ResourceBundle.getBundle("Etiquetas").getString("ErrorEventHasFinished"));
-		 qry=hda.createAndStoreQuestion(event,question,betMinimum);		
+		 qry=hda.createAndStoreQuestion(event,question,betMinimum);	
+	   }
 		return qry;
    };
 	

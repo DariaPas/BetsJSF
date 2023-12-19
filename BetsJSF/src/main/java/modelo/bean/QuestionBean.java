@@ -92,6 +92,7 @@ public class QuestionBean {
 	public void onDateSelect(SelectEvent event) {
 		fecha=(Date) event.getObject();
 		eventos=blfacade.getEvents(fecha);
+		preguntas=null;
 		 FacesContext.getCurrentInstance().addMessage(null,
 		 new FacesMessage("Fecha escogida: "+event.getObject()));
 	}

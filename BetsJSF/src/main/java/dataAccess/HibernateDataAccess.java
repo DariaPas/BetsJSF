@@ -212,7 +212,7 @@ public class HibernateDataAccess implements DataAccessInterface {
 	}
 	
 	/**
-	 * This method retrieves the user from the registered users wit the username and the password
+	 * This method retrieves the user from the registered users in the database with the username and the password
 	 * @param username
 	 * @param password
 	 * @return true if the user exists, else false

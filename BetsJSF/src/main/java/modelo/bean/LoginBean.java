@@ -47,17 +47,13 @@ public class LoginBean {
 	public String login() {
 		boolean esta=blfacade.login(nombre, password);
 		if(esta) {
-			nombre=null;
-			password=null;
 			return "login";
 		}
 		else {
 			FacesContext.getCurrentInstance().addMessage(null,
-			new FacesMessage("El usuario o la contraseña son incorrectos"));
+			new FacesMessage("El usuario o la contraseÃ±a son incorrectos"));
+			return null;
 		}
-		nombre=null;
-		password=null;
-		return null;
 	}
 	
 	public void onDateSelect(SelectEvent event) {
